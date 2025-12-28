@@ -1,27 +1,37 @@
 # Delhi Darwaza
 
-A simple trading exchange made in Odin
+A simple trading exchange made in Elixir
 
 ## Why?
 
-- I wanted to try out Odin
+- I wanted to try out Elixir
 - I like exchanges
-- I like Odin & exchanges
+- I like Elixir & exchanges
+
+## Setup
+
+Install dependencies:
+
+```bash
+mix deps.get
+```
 
 ## Building
 
-To build the project:
+To compile the project:
 
 ```bash
-odin build src
+mix compile
 ```
 
-To run:
+## Running
+
+To run the project:
 
 ```bash
-odin run src
+mix run -e "DelhiDarwaza.main()"
 ```
 
 ## Requirements
 
-- Odin compiler (https://odin-lang.org/) (duh)
+- Elixir ~> 1.16 (https://elixir-lang.org/)
