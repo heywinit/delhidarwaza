@@ -29,7 +29,13 @@ mix compile
 To run the project:
 
 ```bash
-mix run -e "DelhiDarwaza.main()"
+mix run
+```
+
+Or start an interactive Elixir shell:
+
+```bash
+iex -S mix
 ```
 
 ## Requirements
