@@ -11,10 +11,10 @@
 
 ### 1.1 Order Types
 
-- [ ] Define `Order` struct (id, user_id, symbol, side, type, price, quantity, status, timestamp)
-- [ ] Order side enum (Buy/Sell)
-- [ ] Order type enum (Market, Limit, Stop, Stop-Limit)
-- [ ] Order status enum (Pending, Active, Filled, PartiallyFilled, Cancelled, Rejected)
+- [x] Define `Order` struct (id, user_id, symbol, side, type, price, quantity, status, timestamp)
+- [x] Order side enum (Buy/Sell)
+- [x] Order type enum (Market, Limit, Stop, Stop-Limit)
+- [x] Order status enum (Pending, Active, Filled, PartiallyFilled, Cancelled, Rejected)
 
 ### 1.2 Order Book
 
