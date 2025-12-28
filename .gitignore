@@ -1,0 +1,19 @@
+# Odin build artifacts
+*.exe
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Build directories
+build/
+bin/
+
+# IDE
+.vscode/
+.idea/
+
+
