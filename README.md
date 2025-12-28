@@ -38,6 +38,20 @@ Or start an interactive Elixir shell:
 iex -S mix
 ```
 
+## Testing
+
+To run the test suite:
+
+```bash
+mix test
+```
+
+To run tests with coverage:
+
+```bash
+mix test --cover
+```
+
 ## Requirements
 
 - Elixir ~> 1.16 (https://elixir-lang.org/)
