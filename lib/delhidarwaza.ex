@@ -3,7 +3,9 @@ defmodule DelhiDarwaza do
   Delhi Darwaza - A simple trading exchange made in Elixir
   """
 
+  alias DelhiDarwaza.Logger
+
   def main do
-    IO.puts("Delhi Darwaza we up")
+    Logger.startup("Delhi Darwaza we up")
   end
 end

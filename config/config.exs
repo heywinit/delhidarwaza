@@ -18,9 +18,11 @@ config :delhidarwaza,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:component, :event, :order_id, :trade_id, :user_id, :symbol]
+
+# Set log level based on environment
+config :logger, level: :info
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
-
