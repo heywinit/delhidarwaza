@@ -1,6 +1,6 @@
 # Delhi Darwaza
 
-A simple trading exchange made in Elixir
+A trading exchange made in Elixir
 
 ## Why?
 

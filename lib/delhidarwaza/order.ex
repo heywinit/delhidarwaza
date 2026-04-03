@@ -94,7 +94,15 @@ defmodule DelhiDarwaza.Order do
       iex> order.status
       :pending
   """
-  @spec new(String.t(), String.t(), String.t(), side(), order_type(), Decimal.t() | nil, Decimal.t()) ::
+  @spec new(
+          String.t(),
+          String.t(),
+          String.t(),
+          side(),
+          order_type(),
+          Decimal.t() | nil,
+          Decimal.t()
+        ) ::
           t()
   def new(id, user_id, symbol, side, type, price, quantity) do
     now = DateTime.utc_now()
@@ -171,6 +179,7 @@ defmodule DelhiDarwaza.Order do
   """
   @spec filled?(t()) :: boolean()
   def filled?(%__MODULE__{status: :filled}), do: true
+
   def filled?(%__MODULE__{quantity: qty, filled_quantity: filled}) do
     Decimal.equal?(qty, filled)
   end

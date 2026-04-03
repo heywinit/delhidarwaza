@@ -82,13 +82,19 @@ defmodule DelhiDarwaza.Logger do
   Logs API requests.
   """
   def api_request(method, path, metadata \\ []) do
-    Logger.info("API Request: #{method} #{path}", Keyword.merge([component: :api, event: :request], metadata))
+    Logger.info(
+      "API Request: #{method} #{path}",
+      Keyword.merge([component: :api, event: :request], metadata)
+    )
   end
 
   @doc """
   Logs API responses.
   """
   def api_response(status, path, metadata \\ []) do
-    Logger.info("API Response: #{status} #{path}", Keyword.merge([component: :api, event: :response], metadata))
+    Logger.info(
+      "API Response: #{status} #{path}",
+      Keyword.merge([component: :api, event: :response], metadata)
+    )
   end
 end

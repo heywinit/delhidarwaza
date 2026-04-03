@@ -67,12 +67,20 @@ defmodule DelhiDarwaza.OrderTest do
     end
 
     test "rejects invalid order side" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | side: :invalid}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | side: :invalid
+      }
+
       assert {:error, _} = Order.validate(order)
     end
 
     test "rejects invalid order type" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | type: :invalid}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | type: :invalid
+      }
+
       assert {:error, _} = Order.validate(order)
     end
 
@@ -100,28 +108,42 @@ defmodule DelhiDarwaza.OrderTest do
     end
 
     test "rejects negative filled quantity" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | filled_quantity: new("-0.1")}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | filled_quantity: new("-0.1")
+      }
+
       assert {:error, "Filled quantity cannot be negative"} = Order.validate(order)
     end
 
     test "rejects filled quantity exceeding order quantity" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | filled_quantity: new("1.0")}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | filled_quantity: new("1.0")
+      }
+
       assert {:error, "Filled quantity cannot exceed order quantity"} = Order.validate(order)
     end
   end
 
   describe "buy?/1 and sell?/1" do
     test "buy?/1 identifies buy orders" do
-      buy_order = Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
-      sell_order = Order.new("order_2", "user_1", "BTC/USD", :sell, :limit, new("50000"), new("0.5"))
+      buy_order =
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+
+      sell_order =
+        Order.new("order_2", "user_1", "BTC/USD", :sell, :limit, new("50000"), new("0.5"))
 
       assert Order.buy?(buy_order) == true
       assert Order.buy?(sell_order) == false
     end
 
     test "sell?/1 identifies sell orders" do
-      buy_order = Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
-      sell_order = Order.new("order_2", "user_1", "BTC/USD", :sell, :limit, new("50000"), new("0.5"))
+      buy_order =
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+
+      sell_order =
+        Order.new("order_2", "user_1", "BTC/USD", :sell, :limit, new("50000"), new("0.5"))
 
       assert Order.sell?(sell_order) == true
       assert Order.sell?(buy_order) == false
@@ -130,56 +152,113 @@ defmodule DelhiDarwaza.OrderTest do
 
   describe "filled?/1" do
     test "returns true for orders with status :filled" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :filled}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | status: :filled
+      }
+
       assert Order.filled?(order) == true
     end
 
     test "returns true when filled_quantity equals quantity" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | filled_quantity: new("0.5")}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | filled_quantity: new("0.5")
+      }
+
       assert Order.filled?(order) == true
     end
 
     test "returns false for partially filled orders" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | filled_quantity: new("0.3")}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | filled_quantity: new("0.3")
+      }
+
       assert Order.filled?(order) == false
     end
   end
 
   describe "active?/1" do
     test "returns true for active order statuses" do
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :pending}) == true
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :active}) == true
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :partially_filled}) == true
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :pending
+             }) == true
+
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :active
+             }) == true
+
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :partially_filled
+             }) == true
     end
 
     test "returns false for inactive order statuses" do
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :filled}) == false
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :cancelled}) == false
-      assert Order.active?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :rejected}) == false
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :filled
+             }) == false
+
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :cancelled
+             }) == false
+
+      assert Order.active?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :rejected
+             }) == false
     end
   end
 
   describe "cancellable?/1" do
     test "returns true for cancellable order statuses" do
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :pending}) == true
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :active}) == true
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :partially_filled}) == true
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :pending
+             }) == true
+
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :active
+             }) == true
+
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :partially_filled
+             }) == true
     end
 
     test "returns false for non-cancellable order statuses" do
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :filled}) == false
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :cancelled}) == false
-      assert Order.cancellable?(%Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :rejected}) == false
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :filled
+             }) == false
+
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :cancelled
+             }) == false
+
+      assert Order.cancellable?(%Order{
+               Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+               | status: :rejected
+             }) == false
     end
   end
 
   describe "update_status/2" do
     test "updates order status and updated_at timestamp" do
       order = Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+      Process.sleep(2)
       updated = Order.update_status(order, :active)
 
       assert updated.status == :active
-      assert updated.updated_at != order.updated_at
+      assert DateTime.compare(updated.updated_at, order.updated_at) == :gt
     end
   end
 
@@ -201,7 +280,11 @@ defmodule DelhiDarwaza.OrderTest do
     end
 
     test "keeps original status when filled quantity is zero" do
-      order = %Order{Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5")) | status: :active}
+      order = %Order{
+        Order.new("order_1", "user_1", "BTC/USD", :buy, :limit, new("50000"), new("0.5"))
+        | status: :active
+      }
+
       updated = Order.update_filled_quantity(order, new("0"))
 
       assert updated.filled_quantity == new("0")
