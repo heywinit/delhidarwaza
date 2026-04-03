@@ -77,7 +77,9 @@ defmodule DelhiDarwaza.OrderBook do
   @spec update_order(t(), Order.t()) :: {:ok, t()} | {:error, String.t()}
   def update_order(%__MODULE__{} = book, %Order{} = order) do
     if Map.has_key?(book.orders, order.id) do
-      {:ok, add_order(book, order)}
+      with {:ok, book} <- remove_order(book, order.id) do
+        {:ok, add_order(book, order)}
+      end
     else
       {:error, "Order not found: #{order.id}"}
     end
