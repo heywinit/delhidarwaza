@@ -71,7 +71,14 @@ defmodule DelhiDarwaza.MatchingEngine do
     if Decimal.equal?(rem_order.filled_quantity, rem_order.quantity) do
       nil
     else
-      %{rem_order | status: :active}
+      status =
+        if Decimal.gt?(rem_order.filled_quantity, Decimal.new("0")) do
+          :partially_filled
+        else
+          :active
+        end
+
+      %{rem_order | status: status}
     end
   end
 
